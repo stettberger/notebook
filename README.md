@@ -22,11 +22,11 @@ tables, and calendars for comprehensive planning and organization.
 
 ## Screenshots
 
-!()[screenshot.png]
+![Screenshot from example.pdf](screenshot.png)
 
 ## Usage Examples
 
-The file `example.pdf` contains the result of these examples
+The file `example.pdf` contains the result of these examples. `example.tex` is the compilable version.
 
 1. **Basic Page Styles**:
 
