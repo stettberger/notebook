@@ -12,12 +12,17 @@ tables, and calendars for comprehensive planning and organization.
 ## Features
 
 - **Page Styles**: Choose from dotted, lined, or squared page fills to suit different writing and drawing preferences.
+- **Customizable Elements**: Insert customizable full-width boxes for headings, summaries, or important notes.
+  - **To-Do Lists**: Add to-do lists with customizable positioning and fill options.
+  - **Column Layouts**: Organize content with flexible column layouts for side-by-side comparisons or segmented information.
+  - **Calendars**: Embed monthly calendars with options to highlight specific weeks, weekends, or dates, aiding in long-term planning and event tracking.
 - **Pagination**: Automatically number pages for easy reference and organization.
-- **Customizable Boxes**: Insert customizable full-width boxes for headings, summaries, or important notes.
-- **To-Do Lists**: Add to-do lists with customizable positioning and fill options.
-- **Column Layouts**: Organize content with flexible column layouts for side-by-side comparisons or segmented information.
-- **Calendars**: Embed monthly calendars with options to highlight specific weeks, weekends, or dates, aiding in long-term planning and event tracking.
 - **Styling Options**: Extensive customization options, including fold marks and punch marks for physical binder compatibility.
+- **Power of TikZ**: As the package is build upon tikz, you have endless options to customize your paper.
+
+## Screenshots
+
+!()[screenshot.png]
 
 ## Usage Examples
 
