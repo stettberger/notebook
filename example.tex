@@ -1,0 +1,60 @@
+\documentclass[12pt,twoside]{article}
+\usepackage[a5paper,margin=8mm,bindingoffset=4mm]{geometry}
+\usepackage{tikz}
+\usepackage{atbegshi}
+
+\usetikzlibrary{notebook}
+
+\begin{document}
+
+This document contains example pages that are created with the TikZ notebook package. See CTAN for the code of this example document. The contents of this document are also used for the notebook documentation. Every example contains two pages (a left and a right page), so best look at this document in the dual-page view of your PDF viewer.
+\clearpage
+
+
+\notebookpage{fill dotted,paginate}
+\notebookpage{fill squares,paginate}
+\notebookpage{fill lines,paginate}
+\notebookpage{fill crosses,paginate}
+
+
+\notebookpage{
+  box={A full width box},
+  todo=2,
+  columns={Column 1/2,Column 2/3,Col 3/1},
+  fill dotted, time codes,paginate
+}
+
+\notebookpage{
+  box={A full width box},
+  todo={[bottom,fill=gray!30]2},
+  columns={Column 1/2,Column 2/3,Col 3/1},
+  fill crosses, time codes,paginate,
+  label={north east}{Journal},
+}
+
+\pgfcalendarcalc{\year-\month-\day}{\ThisDay}
+\pgfcalendarcalc{\year-\month-last+1}{\NextMonth}
+\pgfcalendarcalc{\Y-\M-last+1}{\NextMonth}
+
+\notebookpage{
+  calendar=\ThisDay,
+  fill elem={
+    [label={[align=center,font={\Huge}]
+      center:\Y\\\pgfcalendarmonthname{\M}}]
+  },
+  calendar/next week/.style={},
+  calendar/gone/.style={},
+  calendar/weekend/.style={green!50!black,font=\bfseries},
+  calendar={[bottom,fill=green!10]{\NextMonth}},
+  paginate,
+}
+
+\nbkeys{
+  every canvas/.style={/notebook/.cd, foldmark,punchmarks={65mm/2,110mm/2}} 
+}                                          
+\notebookpage{
+  month list={\ThisDay}{Column 1/2,Column 2/3},
+  paginate={\ThisDay{} -- \thepage}
+}
+
+\end{document}

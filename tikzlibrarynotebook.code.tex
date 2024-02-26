@@ -1,0 +1,390 @@
+\typeout{TikzNotebook}
+\RequirePackage{pgfkeys}
+\usepackage[strict]{changepage}
+\usepackage{etoolbox}
+\usepackage{lastpage}
+\usetikzlibrary{calc,patterns,patterns.meta,fit,calendar,shapes.misc}
+\usepackage{tikzpagenodes}
+
+\newsavebox{\notebookelembox}
+
+\newdimen\elemwidth
+\newif\ifelem@top
+
+\def\nbkeys#1{\pgfkeys{/notebook/.cd,#1}}
+
+\makeatletter
+
+\def\pgfkeysdefargopt#1#2#3{%
+  \long\def\pgfkeys@temp{%
+    \@ifnextchar[%
+    {\pgfkeysvalueof{#1/.@body}}%
+    {\pgfkeysvalueof{#1/.@body}[#2]}%
+  }%
+  \pgfkeyslet{#1/.@cmd}{\pgfkeys@temp}%
+  \def\pgfkeys@temp[##1]##2\pgfeov{#3}%
+  \pgfkeyslet{#1/.@body}{\pgfkeys@temp}%
+}
+
+
+\pgfkeysdefnargs{/handlers/.code 2 opt}{2}{
+  \edef\pgfkeys@temp{\pgfkeyscurrentpath}%
+  \expandafter\pgfkeysdefargopt\expandafter{\pgfkeys@temp}{#1}{#2}}
+
+\pgfkeys{/handlers/.style 2 opt/.code 2 args=\pgfkeys{\pgfkeyscurrentpath/.code 2 opt={#1}{\pgfkeysalso{#2}}}}
+
+
+\nbkeys{
+  canvas start/.code={%
+    \node[inner sep=0,outer sep=0,fit=(#1), name=canvas]{};
+    \pgfpointanchor{canvas}{east}%
+    \elemwidth=\pgf@x%
+    \pgfpointanchor{canvas}{west}%
+    \addtolength{\elemwidth}{-\pgf@x}
+    \node[inner sep=0,outer sep=0,minimum width=\elemwidth,minimum height=0, anchor=north east] at (canvas.north east) (top-elem) {};
+    \node[inner sep=0,outer sep=0,minimum width=\elemwidth,minimum height=0, anchor=south east] at (canvas.south east) (bottom-elem) {};
+    \nbkeys{every canvas/.try}
+  },
+   % Page Elements: Attached to current page or canvas.
+   paginate format/.style={font=\scriptsize\itshape\color{gray}},
+   paginate/.code={
+     \node[anchor=north,/notebook/paginate format] at (canvas.south){#1};
+   },
+   paginate/.default={\thepage},
+   foldmark/.code={
+     \ifoddpage
+       \draw[ultra thin] (current page.west) -- ++(east:#1);
+     \else
+       \draw[ultra thin] (current page.east) -- ++(west:#1);
+     \fi
+   },
+   foldmark/.default=6mm,
+   %
+   punchmark/.style={
+     ultra thin,circle,draw=gray!50,inner sep=0,anchor=center,minimum size=#1
+   },
+   punchmarks/.code 2 opt={6mm}{
+     \foreach \offset in {#2} {
+       \ifoddpage
+         \path (current page.west)++(east:9mm)++(up:\offset) node[/notebook/punchmark=#1]{};
+         \path (current page.west)++(east:9mm)++(down:\offset) node[/notebook/punchmark=#1]{};
+       \else
+         \path (current page.east)++(west:9mm)++(up:\offset) node[/notebook/punchmark=#1]{};
+         \path (current page.east)++(west:9mm)++(down:\offset) node[/notebook/punchmark=#1]{};
+       \fi
+     }
+   },
+   % Space Fill Elements
+   every pattern/.style={
+     pattern color=gray
+   },
+  fill elem/.code 2 opt={}{
+    \path [#2] (top-elem.south west) rectangle (bottom-elem.north east);
+    \node[fit=(top-elem.south west) (bottom-elem.north east),outer sep=0pt,inner sep=0pt,#1] (top-elem){};
+    \node[fit=(top-elem),inner sep=0pt] (elem){};
+  },
+  fill dotted/.style 2 opt={}{
+    fill elem={[#1]
+      /notebook/every pattern,pattern={Dots[distance=5mm,radius=.8pt,#2]}
+    }
+  },
+  fill squares/.style 2 opt={}{
+    fill elem={[#1]
+      /notebook/every pattern,pattern={Hatch[distance=5mm,#2]}
+    }
+  },
+  fill lines/.style 2 opt={}{
+    fill elem={[#1]
+      /notebook/every pattern,pattern={Lines[distance=9mm,#2]}
+    }
+  },
+  % Filled Elements
+  elem/.code 2 opt={}{
+    \begin{lrbox}{\notebookelembox}
+      \begin{pgfinterruptpicture}
+        \begin{tikzpicture}[remember picture]
+          \path (0,0);
+          #2
+        \end{tikzpicture}
+      \end{pgfinterruptpicture}
+    \end{lrbox}
+    \node[/notebook/elem style/.cd,outer sep=0,inner sep=0pt,top,
+          append after command={
+            \pgfextra{\node[fit=(\tikzlastnode),name=elem,inner sep=0pt,outer sep=0pt] {};}
+          },#1] {\usebox{\notebookelembox}};
+  },
+  /notebook/elem style/.search also={/tikz},
+  /notebook/elem style/.cd,
+  top/.style={
+    anchor=north west, at=(top-elem.south west),name=top-elem,@top=true,
+  },
+  bottom/.style={
+    anchor=south west, at=(bottom-elem.north west),name=bottom-elem,@top=false,
+  },
+  @top/.is if=elem@top,
+  inner sep/.style={
+    /tikz/text width=\elemwidth-2*#1,
+    /tikz/inner sep=#1,
+  },
+  top rule/.style={
+    append after command={
+      \pgfextra{\draw[#1] (\tikzlastnode.north west) -- (\tikzlastnode.north east);}
+    },
+  },
+  bottom rule/.style={
+    append after command={
+      \pgfextra{\draw[#1] (\tikzlastnode.south west) -- (\tikzlastnode.south east);}
+    },
+  },
+  draw/.style={
+    yshift=\ifelem@top\pgflinewidth\else-\pgflinewidth\fi,
+    /tikz/draw=#1,
+    append after command={
+      \pgfextra{
+        \node[fit=(\tikzlastnode),name=\tikzlastnode,outer sep=0,inner ysep=\pgflinewidth,inner xsep=0] {};
+      }
+    }
+  },
+  draw/.default=black,
+  /notebook/.cd,
+  % Decoration elements
+  % FIXME: Make these elem style
+  every label/.style={
+    fill=white,
+    align=center,
+    font=\itshape\color{gray},
+  },
+  label/.code 2 args={
+    \node[anchor=#1,outer ysep=2\pgflinewidth,/notebook/every label] at (elem.#1) {#2};
+  },
+  time codes/.code={
+    \fill[gray!30](elem.north west) rectangle ($(elem.south west)+(east:1.2em)$);
+    \foreach \time/\pos in {08/0.0,09/0.1,10/0.2,11/0.3,12/0.4,13/0.5,14/0.6,15/0.7,16/.8,17/0.9} {
+      \path ($(elem.north west)+(east:0.6em)$) coordinate(@)
+          -- node[pos=\pos,anchor=north, inner sep=2pt] {\color{gray}\scriptsize \time}
+       (@|-elem.south);
+    }
+  },
+  % Special Elements
+  box/.style 2 opt={draw}{
+    elem={[#1]{
+      \node[text width=\elemwidth-2ex,inner sep=1ex] {#2};
+    }}
+  },
+  todo/.style 2 opt={draw}{%
+    elem={[inner sep=3pt,#1]{
+      \foreach \y in {1,...,#2} {
+        \foreach \x in {0,1} {
+          \node[draw, minimum size=4mm,anchor=north west] at (\elemwidth/2*\x,7.5mm-7.5mm*\y) (dot){};
+          \draw[gray!70] (dot.0) -- (dot.180);
+          \draw[dashed] (dot.south east)++(east:1mm) -- ++(east:\elemwidth/2-6mm-6pt);
+        }
+      }}
+    },
+  },
+  column divider/.store in=\columnDivider,
+  column divider=0pt,
+  columns/.style 2 opt={draw}{
+    elem={[#1]{
+      \coordinate (@@) at (0,0);
+      \def\notfirst##1{}
+      \foreach \field/\cols in {#2} {
+        \node[outer sep=0, anchor=north west,align=left,minimum width=(\elemwidth)/6*\cols,at=(@@.north east)]  (@@) {\strut};
+        \node[anchor=base west] at (@@.base west) {\strut \field};
+        \notfirst{
+          \draw ($(@@.north west)+(west:.5\pgflinewidth)+(down:\columnDivider)$)
+          -- ($(@@.south west)+(west:.5\pgflinewidth)+(up:\columnDivider)$);
+        }
+        \global\let\notfirst\relax
+      }
+    }},
+  },
+}
+
+% Crosses
+\tikzdeclarepattern{
+  name=Crosses,
+  type=uncolored,
+  bounding box={(-5pt,-5pt) and (5pt,5pt)},
+  tile size={(\tikztilesize,\tikztilesize)},
+  parameters={\tikzstarradius,\tikztilesize,\tikzlw},
+  tile transformation={rotate=\tikzstarrotate},
+  defaults={
+    radius/.store in=\tikzstarradius,radius=1pt,
+    rotate/.store in=\tikzstarrotate,rotate=0,
+    distance/.store in=\tikztilesize,distance=5mm,
+    line width/.store in=\tikzlw,line width=0.4pt,
+  },
+  code={
+    \draw[line width=\tikzlw] (90:\tikzstarradius) -- (-90:\tikzstarradius);
+    \draw[line width=\tikzlw] (180:\tikzstarradius) -- (0:\tikzstarradius);
+  }
+}
+\pgfkeys{
+  /notebook/fill crosses/.style={
+    fill elem={
+      pattern color=gray,pattern={Crosses[distance=5mm]}
+    }
+  }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Calendar
+\newcount\@tempcntc
+
+\def\@rawjuliantocalendarweek#1{%
+  \@tempcnta=#1\relax%
+  \pgfcalendarjuliantodate{#1}{\@tempa}{\@tempb}{\@tempc}%
+  \pgfcalendardatetojulian{\@tempa-01-01+-1}{\@tempcntb}%
+  \advance\@tempcnta by-\@tempcntb\relax% @tempcnta = ordinal date of start date
+  \pgfcalendarjuliantoweekday{#1}{\@tempcntb}%
+  \advance\@tempcntb by1\relax% @tempcntb = week day number of start date
+  \pgfmathparse{int((\@tempcnta - \@tempcntb + 10) / 7)}%
+}
+
+\def\pgfcalendarjuliantocalendarweek#1#2{%
+  \begingroup%
+  \@rawjuliantocalendarweek{#1}%
+  \@tempcnta=\pgfmathresult\relax%
+  \ifnum\@tempcnta=0\relax%
+    \pgfcalendarjuliantodate{#1}{\@tempa}{\@tempb}{\@tempc}%
+    \pgfcalendardatetojulian{\@tempa-01-01+-1}{\@tempcntc}%
+    \@rawjuliantocalendarweek{\@tempcntc}%
+  \else\ifnum\@tempcnta=53\relax%
+    \pgfcalendarjuliantodate{#1}{\@tempa}{\@tempb}{\@tempc}%
+    \pgfcalendarifdate{\@tempa-12-31}{Thursday,Friday,Saturday,Sunday}{%
+      \relax%
+    }{%
+      \def\pgfmathresult{1}%
+    }%
+  \fi\fi%
+  \global#2=\pgfmathresult\relax%
+  \endgroup%
+}
+
+
+\newcount\notebook@date
+\newcount\notebook@wdcount
+\newcommand{\pgfcalendarcalc}[3][]{%
+  \pgfcalendardatetojulian{#2}{\notebook@date}%
+  \pgfcalendarjuliantodate{\notebook@date}{\@@Y}{\@@M}{\@@D}%
+  \pgfcalendarjuliantoweekday{\notebook@date}{\notebook@wdcount}%
+  \xdef#3{\@@Y-\@@M-\@@D}%
+  \csxdef{#1Y}{\@@Y}%
+  \csxdef{#1M}{\@@M}%
+  \csxdef{#1D}{\@@D}%
+  \csxdef{#1WD}{\the\notebook@wdcount}
+}
+
+\newbox\calendarbox
+\def\nb@calendar@kwcode{
+  \pgfcalendarjuliantocalendarweek{\pgfcalendarcurrentjulian}{\notebook@wdcount}
+  \node[anchor=base west,xshift=-5em-\pgfcalendarcurrentweekday*3.5ex]
+     (notebook@calendar@kw)
+     {\nbkeys{calendar/calendar week=\the\notebook@wdcount}};
+   }
+
+\tikzoption{day headings}{\tikzstyle{day heading}=[#1]}
+\tikzstyle{day heading}=[]
+\tikzstyle{day letter headings}=[
+    execute before day scope={ \ifdate{day of month=1}{%
+      \pgfmathsetlength{\pgf@ya}{\tikz@lib@cal@yshift}%
+      \pgfmathsetlength\pgf@xa{\tikz@lib@cal@xshift}%
+      \pgftransformyshift{-\pgf@ya}
+      \foreach \d/\l in {0/M,1/T,2/W,3/T,4/F,5/S,6/S} {
+        \pgf@xa=\d\pgf@xa%
+        \pgftransformxshift{\pgf@xa}%
+        \pgftransformyshift{\pgf@ya}%
+        \node[every day,day heading]{\l};%
+      } 
+    }{}%
+  }%
+]
+   
+\pgfkeys{
+  /notebook/calendar/next week/.style={fill=gray!20},
+  /notebook/calendar/past/.style={strike out,draw},
+  /notebook/calendar/weekend/.style={gray},
+  /notebook/calendar/every calendar/.style={
+    day heading/.style={font=\bfseries},
+    week list,
+    month label above centered,
+    month text=\mbox{\textit{\%mt} \%y-},
+    every day/.append style={text width=2ex,align=center},
+    day letter headings,
+  },
+  /notebook/calendar/calendar week/.code={
+    \itshape\color{gray}KW#1
+  },
+  /notebook/calendar/.style 2 opt={draw}{
+    elem=[{inner sep=3pt,#1}]{
+      \small
+      \def\nb@ifcal{
+          if (Saturday,Sunday) [/notebook/calendar/weekend]
+          if (Monday,day of month=1) { \nb@calendar@kwcode }
+          if (at least=\nb@startdate) {}
+          else [nodes={text width=2ex,align=right,/notebook/calendar/past}]
+          if (between=\nb@startdate and \nb@startdate+6) [nodes={/notebook/calendar/next week}]
+        }
+      \pgfcalendarcalc[nb@]{#2}{\nb@startdate}
+      \calendar[dates=\nb@Y-\nb@M-01 to \nb@Y-\nb@M-last,
+                /notebook/calendar/every calendar] (this month) \nb@ifcal;
+      \pgfcalendarcalc[nb@]{\nb@Y-\nb@M-last+1}{\nb@tmp}
+      \calendar[dates=\nb@Y-\nb@M-01 to \nb@Y-\nb@M-last,
+                /notebook/calendar/every calendar] (next month)
+                at (6.5cm,0) \nb@ifcal;
+    },
+  }
+}
+
+\csdef{nb@weekday@0}{Mo}
+\csdef{nb@weekday@1}{Di}
+\csdef{nb@weekday@2}{Mi}
+\csdef{nb@weekday@3}{Do}
+\csdef{nb@weekday@4}{Fr}
+\csdef{nb@weekday@5}{\bfseries Sa}
+\csdef{nb@weekday@6}{\bfseries So}
+
+\def\nb@parsemonth#1#2{
+  \pgfcalendarcalc[nb@]{#1}{\nb@tmp}
+  \pgfcalendar{cal}{\nb@Y-\nb@M-01}{\nb@Y-\nb@M-last}{
+    \listxadd{#2}{{\pgfcalendarcurrentday}{\pgfcalendarcurrentweekday}}
+  }
+}
+
+\pgfkeys{
+  /notebook/month list/.code 2 args={
+    \scriptsize%
+    \nbkeys{
+      elem={[draw]\node at (.5\elemwidth,0){\strut \Y{} - \pgfcalendarmonthname{\M}};},
+      columns={Datum/1,#2}
+    }
+    \def\nb@cols{}
+    \foreach \field/\width in {#2} {
+      \xdef\nb@cols{\nb@cols,/\width}
+    }
+    % Collect all days in month
+    \let\alldays\relax
+    \nb@parsemonth{#1}{\alldays}
+    \def\notebook@month@day##1##2##3{
+      \pgfkeys{
+        /notebook/.cd,
+        columns={%
+          {\rlap{\csuse{nb@weekday@##3}}\hphantom{Mit} \pgfcalendarmonthshortname{\M} ##2}/1%
+          ##1%
+        },
+      }
+    }
+    \def\do##1{\expandafter\notebook@month@day\expandafter{\nb@cols}##1}
+    \dolistloop{\alldays}
+  },
+}
+
+
+\newcommand{\notebookpage}[2][]{%
+  \thispagestyle{empty}%
+  \begin{tikzpicture}[remember picture,overlay]\sffamily%
+    \pgfkeys{/notebook/.cd,canvas start=current page text area,#2}%
+  \end{tikzpicture}%
+  \clearpage
+}

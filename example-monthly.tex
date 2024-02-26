@@ -1,0 +1,75 @@
+\documentclass[12pt,twoside,openright]{article}
+\usepackage[a5paper,margin=8mm,bindingoffset=4mm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{notebook}
+
+
+\begin{document}
+  \pgfcalendarcalc[Month]{2024-02-01}{\Month}
+  \pgfcalendarcalc[LastDay]{\MonthY-\MonthM-last}{\LastDay}
+
+  \nbkeys{
+    my notes/.style={fill dotted,label={north east}{#1},},
+    my notes/.default=Notes,
+    every canvas/.style={/notebook/.cd,
+      foldmark,punchmarks={65mm/2,110mm/2},
+      paginate={\MonthY-\MonthM[\thepage]},
+    }
+  }
+  
+  \notebookpage{
+    calendar/next week/.style={},
+    calendar=\Month,
+    every label/.append style={font=\Huge},
+    fill elem={},
+    label={center}{
+      \Huge \MonthY\\\pgfcalendarmonthname{\MonthM}
+    }
+  }
+
+
+  \foreach \DayOfMonth [parse=true] in {0,...,\LastDayD-1} {
+    \pgfcalendarcalc{\Month+\DayOfMonth}{\ThisDay}
+    % Month List
+    \ifnum\DayOfMonth=0\relax
+      \notebookpage{
+        month list={\ThisDay}{Memorable/3,X/.33,Y/.33,Z/.33,/1},
+      }
+      \notebookpage{my notes}
+    \fi
+    % Week
+    \ifnum\WD=0\relax
+      \pgfcalendarcalc[Sunday]{\ThisDay+7}{\Sunday}
+      \notebookpage{
+        calendar=\ThisDay,
+        my notes
+      }
+        
+      \notebookpage{
+        box={\textbf{This Week}  \hfill \ThisDay\ \  --\ \ \Sunday\hspace{1em}},
+        column divider={1.3pt},
+        columns={[fill=gray!30,draw]Project/1,Task/3,Prio{/}State/1,Due/1},
+        tmp/.style={
+          columns={/1,/3,/.5,/.5,/1},
+        },
+        tmp/.list={1,...,10},
+        box={[fill=gray!30,draw]\textbf{Ideas/Tasks to Review}},
+        tmp/.list={1,...,10},
+      }
+    \fi
+
+    \expandafter\ifnum\WD<5\relax
+      \notebookpage{
+        columns={%
+          {\textbf{\pgfcalendarweekdayname{\WD}, \D.\M.\Y}}/5,%
+          \color{gray}LOC/1%
+        },
+        columns={[bottom,draw]\color{gray}W/2,\color{gray}H/2,\color{gray}R/2},
+        todo={[draw]3},
+        my notes={Journal},
+        time codes
+      }
+      \notebookpage{my notes}
+    \fi
+  }
+\end{document}
