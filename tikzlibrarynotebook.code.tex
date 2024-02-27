@@ -102,7 +102,7 @@
   elem/.code 2 opt={}{
     \begin{lrbox}{\notebookelembox}
       \begin{pgfinterruptpicture}
-        \begin{tikzpicture}[remember picture]
+        \begin{tikzpicture}[remember picture,/notebook/every elem content]
           \path (0,0);
           #2
         \end{tikzpicture}
@@ -111,7 +111,7 @@
     \node[/notebook/elem style/.cd,outer sep=0,inner sep=0pt,top,
           append after command={
             \pgfextra{\node[fit=(\tikzlastnode),name=elem,inner sep=0pt,outer sep=0pt] {};}
-          },#1] {\usebox{\notebookelembox}};
+          },/notebook/every border,#1] {\usebox{\notebookelembox}};
   },
   /notebook/elem style/.search also={/tikz},
   /notebook/elem style/.cd,
@@ -128,12 +128,12 @@
   },
   top rule/.style={
     append after command={
-      \pgfextra{\draw[#1] (\tikzlastnode.north west) -- (\tikzlastnode.north east);}
+      \pgfextra{\draw[/notebook/every border,#1] (\tikzlastnode.north west) -- (\tikzlastnode.north east);}
     },
   },
   bottom rule/.style={
     append after command={
-      \pgfextra{\draw[#1] (\tikzlastnode.south west) -- (\tikzlastnode.south east);}
+      \pgfextra{\draw[/notebook/every border,#1] (\tikzlastnode.south west) -- (\tikzlastnode.south east);}
     },
   },
   draw/.style={
@@ -145,10 +145,15 @@
       }
     }
   },
-  draw/.default=black,
   /notebook/.cd,
   % Decoration elements
   % FIXME: Make these elem style
+  every border/.style={
+    color=gray,
+  },
+  every elem content/.style={
+    color=black,
+  },
   every label/.style={
     fill=white,
     align=center,
@@ -176,7 +181,7 @@
       \foreach \y in {1,...,#2} {
         \foreach \x in {0,1} {
           \node[draw, minimum size=4mm,anchor=north west] at (\elemwidth/2*\x,7.5mm-7.5mm*\y) (dot){};
-          \draw[gray!70] (dot.0) -- (dot.180);
+          \draw[draw opacity=0.5] (dot.0) -- (dot.180);
           \draw[dashed] (dot.south east)++(east:1mm) -- ++(east:\elemwidth/2-6mm-6pt);
         }
       }}
@@ -192,7 +197,7 @@
         \node[outer sep=0, anchor=north west,align=left,minimum width=(\elemwidth)/6*\cols,at=(@@.north east)]  (@@) {\strut};
         \node[anchor=base west] at (@@.base west) {\strut \field};
         \notfirst{
-          \draw ($(@@.north west)+(west:.5\pgflinewidth)+(down:\columnDivider)$)
+          \draw[/notebook/every border] ($(@@.north west)+(west:.5\pgflinewidth)+(down:\columnDivider)$)
           -- ($(@@.south west)+(west:.5\pgflinewidth)+(up:\columnDivider)$);
         }
         \global\let\notfirst\relax
@@ -223,7 +228,7 @@
 \pgfkeys{
   /notebook/fill crosses/.style={
     fill elem={
-      pattern color=gray,pattern={Crosses[distance=5mm]}
+      /notebook/every pattern,pattern={Crosses[distance=5mm]}
     }
   }
 }
