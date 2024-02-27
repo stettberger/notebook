@@ -53,12 +53,12 @@
    paginate/.default={\thepage},
    foldmark/.code={
      \ifoddpage
-       \draw[ultra thin] (current page.west) -- ++(east:#1);
+       \draw[] (current page.west) -- ++(east:#1);
      \else
-       \draw[ultra thin] (current page.east) -- ++(west:#1);
+       \draw[] (current page.east) -- ++(west:#1);
      \fi
    },
-   foldmark/.default=6mm,
+   foldmark/.default=8mm,
    %
    punchmark/.style={
      ultra thin,circle,draw=gray!50,inner sep=0,anchor=center,minimum size=#1

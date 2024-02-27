@@ -103,7 +103,7 @@ The file `example.pdf` contains the result of these examples. `example.tex` is t
    \notebookpage{fill dotted}
    ```
 
-**Getting Started:**
+## Getting Started
 
 To begin using the Notebook package in your LaTeX documents, simply
 include it with `\usepackage{tikz} \usetikzlibrary{notebook}` in your
@@ -111,3 +111,11 @@ LaTeX preamble. Customize your pages using the `\notebookpage{}`
 command with your desired options and styles. Explore different
 combinations of features to create the perfect template for your
 note-taking and journaling needs.
+
+## Hardware Recommendations
+
+- For my physical binder, I use a [FlexiNotes](https://www.flexinotes.de) notebook, which I can highly recommend.
+
+- For my handwriting, I use a **Lamy logo** fountain pen with the extra fine tip. The pen looks elegant and takes up those large Lamy ink cartridges.
+
+- Do never ask me about 4-hole perforators for DIN A5 paper...
