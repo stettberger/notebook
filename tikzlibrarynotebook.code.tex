@@ -79,23 +79,38 @@
      pattern color=gray
    },
   fill elem/.code 2 opt={}{
-    \path [#2] (top-elem.south west) rectangle (bottom-elem.north east);
+    \path [#2] (bottom-elem.north east) rectangle (top-elem.south west);
     \node[fit=(top-elem.south west) (bottom-elem.north east),outer sep=0pt,inner sep=0pt,#1] (top-elem){};
     \node[fit=(top-elem),inner sep=0pt] (elem){};
+    % \tikzmath{coordinate \C;
+    %   \C = (elem.north east)-(elem.north west); 
+    % }
+    % \typeout{elem width: \convertto{mm}{\Cx} mm}
+    % \typeout{elem width: \convertto{mm}{\pgfsys@thepagewidth} mm}
+  },
+  /pgf/pattern keys/align/.code={
+    \pgfgetlastxy{\nb@x}{\nb@y}%
+    \pgfpointanchor{current page}{north west}%
+    \pgf@xa=\pgf@x\pgf@ya=\pgf@y%
+    \pgfmathsetmacro{\nb@x}{\nb@x-\the\pgf@xa}%
+    \pgfmathsetmacro{\nb@y}{\nb@y-\the\pgf@ya+\pgfsys@thepageheight}%
+    % \typeout{#1: (\nb@x, \nb@y)}
+    \pgfkeys{/pgf/pattern keys/.cd, xshift=\nb@x,yshift=\nb@y}%
+    % \node[draw,fill=green] at (\nb@x, \nb@y) {x};
   },
   fill dotted/.style 2 opt={}{
     fill elem={[#1]
-      /notebook/every pattern,pattern={Dots[distance=5mm,radius=.8pt,#2]}
-    }
+      /notebook/every pattern,pattern={Dots[distance=5mm,radius=.8pt,align]}
+    },
   },
   fill squares/.style 2 opt={}{
     fill elem={[#1]
-      /notebook/every pattern,pattern={Hatch[distance=5mm,#2]}
+      /notebook/every pattern,pattern={Hatch[distance=5mm,align,#2]}
     }
   },
   fill lines/.style 2 opt={}{
     fill elem={[#1]
-      /notebook/every pattern,pattern={Lines[distance=9mm,#2]}
+      /notebook/every pattern,pattern={Lines[distance=9mm,align,#2]}
     }
   },
   % Filled Elements
@@ -160,7 +175,7 @@
     font=\itshape\color{gray},
   },
   label/.code 2 args={
-    \node[anchor=#1,outer ysep=2\pgflinewidth,/notebook/every label] at (elem.#1) {#2};
+    \node[anchor=#1,outer sep=\pgflinewidth,/notebook/every label] at (elem.#1) {#2};
   },
   time codes/.code={
     \fill[gray!30](elem.north west) rectangle ($(elem.south west)+(east:1.2em)$);
@@ -170,6 +185,11 @@
        (@|-elem.south);
     }
   },
+  vline/.code 2 opt={}{%
+    \draw[line width=2\pgflinewidth,gray,#1] ($(elem.north west)+(east:#2)$)%
+                 -- ($(elem.south west)+(east:#2)$);
+  },
+  vline/.default={5mm},
   % Special Elements
   box/.style 2 opt={draw}{
     elem={[#1]{

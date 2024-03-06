@@ -1,9 +1,25 @@
 \documentclass[12pt,twoside]{article}
-\usepackage[a5paper,margin=8mm,bindingoffset=4mm]{geometry}
+\usepackage[a5paper,margin=8mm,bindingoffset=7mm]{geometry}
 \usepackage{tikz}
 \usetikzlibrary{notebook}
 
 \begin{document}
-\notebookpage{fill dotted}
-\notebookpage{fill dotted}
+\nbkeys{
+  every canvas/.style={/notebook/.cd,
+    foldmark,punchmarks={65mm/2,65mm/2+45mm},
+  },
+  my dotted/.style={
+    fill dotted={[draw=gray]},label={north east}{Notes},
+    vline={[dash pattern=on 2.5mm off 2.5mm, dash phase=-1.25mm, line width=0.5\pgflinewidth]20mm},
+  },
+  my squares/.style={
+    fill squares={[draw=gray]},label={north east}{Noes},
+    vline=20mm,
+  },
+}
+
+\notebookpage{my dotted}
+\notebookpage{my dotted}
+\notebookpage{my squares}
+\notebookpage{my squares}
 \end{document}
