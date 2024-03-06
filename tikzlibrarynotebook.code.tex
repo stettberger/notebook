@@ -88,15 +88,14 @@
     % \typeout{elem width: \convertto{mm}{\Cx} mm}
     % \typeout{elem width: \convertto{mm}{\pgfsys@thepagewidth} mm}
   },
+  % Align Pattern to last point on path
   /pgf/pattern keys/align/.code={
     \pgfgetlastxy{\nb@x}{\nb@y}%
     \pgfpointanchor{current page}{north west}%
     \pgf@xa=\pgf@x\pgf@ya=\pgf@y%
     \pgfmathsetmacro{\nb@x}{\nb@x-\the\pgf@xa}%
     \pgfmathsetmacro{\nb@y}{\nb@y-\the\pgf@ya+\pgfsys@thepageheight}%
-    % \typeout{#1: (\nb@x, \nb@y)}
     \pgfkeys{/pgf/pattern keys/.cd, xshift=\nb@x,yshift=\nb@y}%
-    % \node[draw,fill=green] at (\nb@x, \nb@y) {x};
   },
   fill dotted/.style 2 opt={}{
     fill elem={[#1]
@@ -110,7 +109,7 @@
   },
   fill lines/.style 2 opt={}{
     fill elem={[#1]
-      /notebook/every pattern,pattern={Lines[distance=9mm,align,#2]}
+      /notebook/every pattern,pattern={Lines[distance=8.435mm,align,#2]}
     }
   },
   % Filled Elements
@@ -127,6 +126,9 @@
           append after command={
             \pgfextra{\node[fit=(\tikzlastnode),name=elem,inner sep=0pt,outer sep=0pt] {};}
           },/notebook/every border,#1] {\usebox{\notebookelembox}};
+  },
+  space/.style 2 opt={}{
+    elem={[#1] \path (0,#2);}
   },
   /notebook/elem style/.search also={/tikz},
   /notebook/elem style/.cd,
@@ -185,8 +187,8 @@
        (@|-elem.south);
     }
   },
-  vline/.code 2 opt={}{%
-    \draw[line width=2\pgflinewidth,gray,#1] ($(elem.north west)+(east:#2)$)%
+  vline/.code 2 opt={gray}{%
+    \draw[#1] ($(elem.north west)+(east:#2)$)%
                  -- ($(elem.south west)+(east:#2)$);
   },
   vline/.default={5mm},

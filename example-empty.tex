@@ -10,16 +10,22 @@
   },
   my dotted/.style={
     fill dotted={[draw=gray]},label={north east}{Notes},
-    vline={[dash pattern=on 2.5mm off 2.5mm, dash phase=-1.25mm, line width=0.5\pgflinewidth]20mm},
+    vline={[gray,dash pattern=on 2.5mm off 2.5mm, dash phase=-1.25mm, line width=0.5\pgflinewidth]20mm},
   },
   my squares/.style={
-    fill squares={[draw=gray]},label={north east}{Noes},
+    fill squares={[draw=gray]},label={north east}{Notes},
+    vline={[gray,ultra thick]20mm},
+  },
+  my lines/.style={
+    fill lines={[draw=gray]},label={north east}{Notes},
     vline=20mm,
   },
 }
 
-\notebookpage{my dotted}
+\notebookpage{todo=3,space=1mm,my dotted}
 \notebookpage{my dotted}
 \notebookpage{my squares}
 \notebookpage{my squares}
+\notebookpage{my lines}
+\notebookpage{my lines}
 \end{document}
