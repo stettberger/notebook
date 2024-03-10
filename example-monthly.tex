@@ -1,5 +1,5 @@
 \documentclass[12pt,twoside,openright]{article}
-\usepackage[a5paper,margin=8mm,bindingoffset=4mm]{geometry}
+\usepackage[a5paper,margin=8mm,bindingoffset=7mm]{geometry}
 \usepackage{tikz}
 \usetikzlibrary{notebook}
 
@@ -9,7 +9,7 @@
   \pgfcalendarcalc[LastDay]{\MonthY-\MonthM-last}{\LastDay}
 
   \nbkeys{
-    my notes/.style={fill dotted,label={north east}{#1},},
+    my notes/.style={fill elem=dotted,label={north east}{#1},},
     my notes/.default=Notes,
     every canvas/.style={/notebook/.cd,
       foldmark,punchmarks={65mm/2,65mm/2+45mm},
@@ -34,48 +34,66 @@
     \ifnum\DayOfMonth=0\relax
       \notebookpage{
         month list={\ThisDay}{Memorable/3,X/.33,Y/.33,Z/.33,/1},
+        columns={X/2,Y/2,Z/2},
       }
+      %\notebookpage{
+      %  box={[fill=gray!50,draw]
+      %    \Huge Backlog\hfill \pgfcalendarmonthname{\M} - \Y},
+      %  columns={[fill=gray!30,draw]Project/1,Task/3,Prio{/}State/1,Due/1},
+      %  fill elem={draw,lines},
+      %  vline/.list={\elemwidth/6,\elemwidth/6*4,\elemwidth/6*5},
+      %}
       \notebookpage{my notes}
     \fi
     % Week
     \ifnum\WD=0\relax
       \pgfcalendarcalc[Sunday]{\ThisDay+7}{\Sunday}
+       \notebookpage{
+        box={\textbf{This Week}  \hfill \ThisDay\ \  --\ \ \Sunday\hspace{1em}},
+        column divider={1.3pt},
+        columns={[fill=gray!30,draw]Project/1,Task/3,Prio{/}State/1,Due/1},
+        elem lines=12,
+        vline/.list={\elemwidth/6,\elemwidth/6*4,\elemwidth/6*4.5,\elemwidth/6*5},
+        box={[fill=gray!30,draw]\textbf{Ideas/Tasks to Review}},
+        elem lines=8,
+        vline/.list={\elemwidth/6,\elemwidth/6*5},
+      }
       \notebookpage{
         calendar=\ThisDay,
         my notes
       }
-        
-      \notebookpage{
-        box={\textbf{This Week}  \hfill \ThisDay\ \  --\ \ \Sunday\hspace{1em}},
-        column divider={1.3pt},
-        columns={[fill=gray!30,draw]Project/1,Task/3,Prio{/}State/1,Due/1},
-        tmp/.style={
-          columns={/1,/3,/.5,/.5,/1},
-        },
-        tmp/.list={1,...,10},
-        box={[fill=gray!30,draw]\textbf{Ideas/Tasks to Review}},
-        tmp/.list={1,...,10},
-      }
     \fi
 
-    \expandafter\ifnum\WD<5\relax
+    \ifnum\WD<5\relax
       \notebookpage{
         columns={%
           {\textbf{\pgfcalendarweekdayname{\WD}, \D.\M.\Y}}/5,%
-          \color{gray}LOC/1%
+          /1%
         },
-        columns={[bottom,draw]\color{gray}W/2,\color{gray}H/2,\color{gray}R/2},
+        columns={[draw]\color{gray}W/2,\color{gray}H/2,\color{gray}R/2},
+        %space={[bottom]1mm},
         todo={[draw]3},
         my notes={Journal},
-        time codes
+        time codes={7,...,21},
+        vline={[gray,dash pattern=on 2.5mm off 2.5mm, dash phase=-1.25mm, line width=0.5\pgflinewidth]40mm},
       }
       \notebookpage{my notes}
+    \fi
+    \ifnum\WD>4\relax
+      \notebookpage{
+        columns={%
+          {\textbf{\pgfcalendarweekdayname{\WD}, \D.\M.\Y}}/5
+          /1%
+        },
+        columns={[draw]\color{gray}W/2,\color{gray}H/2,\color{gray}R/2},
+        my notes
+      }
     \fi
   }
 
   \notebookpage{my notes}
-  \notebookpage{my notes}
-  \notebookpage{my notes}
+%  \notebookpage{my notes}
+%  \notebookpage{my notes}
 
 
 \end{document}

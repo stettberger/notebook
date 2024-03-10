@@ -11,24 +11,24 @@ This document contains example pages that are created with the TikZ notebook pac
 \clearpage
 
 
-\notebookpage{fill dotted,paginate}
-\notebookpage{fill squares,paginate}
-\notebookpage{fill lines,paginate}
-\notebookpage{fill crosses,paginate}
+\notebookpage{fill elem=dotted,paginate}
+\notebookpage{fill elem=squares,paginate}
+\notebookpage{fill elem=lines,paginate}
+\notebookpage{fill elem=crosses,paginate}
 
 
 \notebookpage{
   box={A full width box},
   todo=2,
   columns={Column 1/2,Column 2/3,Col 3/1},
-  fill dotted, time codes,paginate
+  fill elem=dotted, time codes,paginate
 }
 
 \notebookpage{
   box={A full width box},
   todo={[bottom,fill=gray!30]2},
   columns={Column 1/2,Column 2/3,Col 3/1},
-  fill crosses, time codes,paginate,
+  fill elem=crosses, time codes,paginate,
   label={north east}{Journal},
 }
 
@@ -38,10 +38,9 @@ This document contains example pages that are created with the TikZ notebook pac
 
 \notebookpage{
   calendar=\ThisDay,
-  fill elem={
-    [label={[align=center,font={\Huge}]
-      center:\Y\\\pgfcalendarmonthname{\M}}]
-  },
+  fill elem={},
+  every label/.append style={font=\Huge},
+  label={center}{\Y\\\pgfcalendarmonthname{\M}},
   calendar/next week/.style={},
   calendar/gone/.style={},
   calendar/weekend/.style={green!50!black,font=\bfseries},

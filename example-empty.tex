@@ -6,23 +6,30 @@
 \begin{document}
 \nbkeys{
   every canvas/.style={/notebook/.cd,
-    foldmark,punchmarks={65mm/2,65mm/2+45mm},
+    foldmark,punchmarks={65mm/2,65mm/2+45mm},logo
+  },
+  logo/.code={
+    \node[anchor=west,rotate=90] at (foldmark) {\color{gray}\scriptsize TU Braunschweig};
+    \node[anchor=east,rotate=90] at (foldmark) {\color{gray}\scriptsize Christian Dietrich};
   },
   my dotted/.style={
-    fill dotted={[draw=gray]},label={north east}{Notes},
+    fill elem={dotted},
+    time codes,
+    label={north east}{Notes},
     vline={[gray,dash pattern=on 2.5mm off 2.5mm, dash phase=-1.25mm, line width=0.5\pgflinewidth]20mm},
   },
   my squares/.style={
-    fill squares={[draw=gray]},label={north east}{Notes},
-    vline={[gray,ultra thick]20mm},
+    fill elem={squares},
+    label={north east}{Notes},
+    vline={[gray,ultra thick]15mm},
   },
   my lines/.style={
-    fill lines={[draw=gray]},label={north east}{Notes},
-    vline=20mm,
+    fill elem={lines},
+    label={north east}{Notes},
+    vline=15mm,
   },
 }
 
-\notebookpage{todo=3,space=1mm,my dotted}
 \notebookpage{my dotted}
 \notebookpage{my squares}
 \notebookpage{my squares}

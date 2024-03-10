@@ -71,10 +71,9 @@ The file `example.pdf` contains the result of these examples. `example.tex` is t
 
    \notebookpage{
      calendar=\ThisDay,
-     fill elem={
-       [label={[align=center,font={\Huge}]
-         center:\Y\\\pgfcalendarmonthname{\M}}]
-     },
+     fill elem={},
+     every label/.append style={font=\Huge},
+     label={center}{\Y\\\pgfcalendarmonthname{\M}},
      calendar/next week/.style={},
      calendar/gone/.style={},
      calendar/weekend/.style={green!50!black,font=\bfseries},
@@ -116,6 +115,6 @@ note-taking and journaling needs.
 
 - For my physical binder, I use a [FlexiNotes](https://www.flexinotes.de) notebook, which I can highly recommend.
 
-- For my handwriting, I use a **Lamy logo** fountain pen with the extra fine tip. The pen looks elegant and takes up those large Lamy ink cartridges.
+- For my handwriting, I use a **Lamy logo** fountain pen with the extra fine (EF) tip. The pen looks elegant and takes up one of those large Lamy ink cartridges.
 
 - Do never ask me about 4-hole perforators for DIN A5 paper...

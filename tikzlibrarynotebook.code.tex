@@ -22,7 +22,7 @@
     {\pgfkeysvalueof{#1/.@body}[#2]}%
   }%
   \pgfkeyslet{#1/.@cmd}{\pgfkeys@temp}%
-  \def\pgfkeys@temp[##1]##2\pgfeov{#3}%
+  \long\def\pgfkeys@temp[##1]##2\pgfeov{#3}%
   \pgfkeyslet{#1/.@body}{\pgfkeys@temp}%
 }
 
@@ -53,9 +53,9 @@
    paginate/.default={\thepage},
    foldmark/.code={
      \ifoddpage
-       \draw[] (current page.west) -- ++(east:#1);
+       \draw[gray] (current page.west) -- coordinate[pos=0.5](foldmark) ++(east:#1);
      \else
-       \draw[] (current page.east) -- ++(west:#1);
+       \draw[gray] (current page.east) -- coordinate[pos=0.5](foldmark) ++(west:#1);
      \fi
    },
    foldmark/.default=8mm,
@@ -75,61 +75,76 @@
      }
    },
    % Space Fill Elements
-   every pattern/.style={
-     pattern color=gray
+   fill elem/.code={
+     \node[fit=(top-elem.south west) (bottom-elem.north east),outer sep=0pt,inner sep=0pt,
+           name=top-elem, alias=elem,
+          /notebook/elem style/.cd, @top=true,#1] {};
    },
-  fill elem/.code 2 opt={}{
-    \path [#2] (bottom-elem.north east) rectangle (top-elem.south west);
-    \node[fit=(top-elem.south west) (bottom-elem.north east),outer sep=0pt,inner sep=0pt,#1] (top-elem){};
-    \node[fit=(top-elem),inner sep=0pt] (elem){};
-    % \tikzmath{coordinate \C;
-    %   \C = (elem.north east)-(elem.north west); 
-    % }
-    % \typeout{elem width: \convertto{mm}{\Cx} mm}
-    % \typeout{elem width: \convertto{mm}{\pgfsys@thepagewidth} mm}
-  },
-  % Align Pattern to last point on path
-  /pgf/pattern keys/align/.code={
-    \pgfgetlastxy{\nb@x}{\nb@y}%
-    \pgfpointanchor{current page}{north west}%
-    \pgf@xa=\pgf@x\pgf@ya=\pgf@y%
-    \pgfmathsetmacro{\nb@x}{\nb@x-\the\pgf@xa}%
-    \pgfmathsetmacro{\nb@y}{\nb@y-\the\pgf@ya+\pgfsys@thepageheight}%
-    \pgfkeys{/pgf/pattern keys/.cd, xshift=\nb@x,yshift=\nb@y}%
-  },
-  fill dotted/.style 2 opt={}{
-    fill elem={[#1]
-      /notebook/every pattern,pattern={Dots[distance=5mm,radius=.8pt,align]}
+   every pattern/.style={pattern color=gray},
+   % Align Pattern to given anchor
+   /pgf/pattern keys/align/.code args={(#1.#2)}{
+     \pgfpointanchor{#1}{#2}%
+     \pgf@xa=\pgf@x  \pgf@ya=\pgf@y%
+     \pgfpointanchor{current page}{north west}%
+     \pgf@xb=\pgf@x\pgf@yb=\pgf@y%
+     \pgfmathsetmacro{\nb@x}{\the\pgf@xa-\the\pgf@xb}%
+     \pgfmathsetmacro{\nb@y}{\the\pgf@ya-\the\pgf@yb+\pgfsys@thepageheight}%
+     \pgfkeys{/pgf/pattern keys/.cd, xshift=\nb@x,yshift=\nb@y}%
+   },
+   /pgf/pattern keys/align/.default={(elem.north west)},
+   elem style/pattern/.style={
+     /tikz/append after command={
+       \pgfextra{
+         \path [#1] (\tikzlastnode.north east) rectangle (\tikzlastnode.south west);
+       }
+     },
+   },
+   elem style/dotted/.style={
+     pattern={/notebook/every pattern,pattern={Dots[distance=5mm,radius=.8pt,align,#1]}}
+   },
+   elem style/squares/.style={
+     pattern={/notebook/every pattern,pattern={Hatch[distance=5mm,align,#1]}},
+   },
+   elem style/line distance/.store in=\nb@es@linedistance,
+   elem style/line distance=8.435mm,
+   elem style/lines/.style={
+     pattern={/notebook/every pattern,pattern={Lines[distance=\nb@es@linedistance,align,#1]}},
+   },
+ }
+ \nbkeys{
+   % Elements that contain a TiKz picture
+   elem/.code 2 opt={}{
+     \begin{lrbox}{\notebookelembox}%
+       \begin{pgfinterruptpicture}%
+         \begin{tikzpicture}[remember picture,/notebook/every elem content]
+           \path (0,0);
+           #2
+         \end{tikzpicture}%
+       \end{pgfinterruptpicture}%
+     \end{lrbox}
+     \node[/notebook/elem style/.cd,
+           outer sep=0,inner sep=0pt,
+           top, alias=elem,/notebook/every border,#1] {\usebox{\notebookelembox}};
     },
-  },
-  fill squares/.style 2 opt={}{
-    fill elem={[#1]
-      /notebook/every pattern,pattern={Hatch[distance=5mm,align,#2]}
-    }
-  },
-  fill lines/.style 2 opt={}{
-    fill elem={[#1]
-      /notebook/every pattern,pattern={Lines[distance=8.435mm,align,#2]}
-    }
-  },
-  % Filled Elements
-  elem/.code 2 opt={}{
-    \begin{lrbox}{\notebookelembox}
-      \begin{pgfinterruptpicture}
-        \begin{tikzpicture}[remember picture,/notebook/every elem content]
-          \path (0,0);
-          #2
-        \end{tikzpicture}
-      \end{pgfinterruptpicture}
-    \end{lrbox}
-    \node[/notebook/elem style/.cd,outer sep=0,inner sep=0pt,top,
-          append after command={
-            \pgfextra{\node[fit=(\tikzlastnode),name=elem,inner sep=0pt,outer sep=0pt] {};}
-          },/notebook/every border,#1] {\usebox{\notebookelembox}};
+   minipage/.code 2 opt={}{
+      \begin{lrbox}{\notebookelembox}%
+        \begin{pgfinterruptpicture}%
+          \begin{minipage}{\dimexpr\elemwidth-2\pgflinewidth\relax}%
+            #2%
+          \end{minipage}%
+        \end{pgfinterruptpicture}
+      \end{lrbox}
+     \node[/notebook/elem style/.cd,
+           outer sep=0,inner sep=0pt,top, alias=elem, /notebook/every border,#1] {\usebox{\notebookelembox}};
   },
   space/.style 2 opt={}{
-    elem={[#1] \path (0,#2);}
+    elem={[#1] \path ($(0,0)+(up:#2)$);}
   },
+  elem lines/.style={
+    space={[lines,draw]\nb@es@linedistance*#1}
+  },
+}
+\nbkeys{
   /notebook/elem style/.search also={/tikz},
   /notebook/elem style/.cd,
   top/.style={
@@ -179,14 +194,21 @@
   label/.code 2 args={
     \node[anchor=#1,outer sep=\pgflinewidth,/notebook/every label] at (elem.#1) {#2};
   },
+  time code raster/.store in=\nb@tc@raster,
+  time code raster=5mm,
+  time code distance/.store in=\nb@tc@space,
+  time code distance=2,
   time codes/.code={
-    \fill[gray!30](elem.north west) rectangle ($(elem.south west)+(east:1.2em)$);
-    \foreach \time/\pos in {08/0.0,09/0.1,10/0.2,11/0.3,12/0.4,13/0.5,14/0.6,15/0.7,16/.8,17/0.9} {
-      \path ($(elem.north west)+(east:0.6em)$) coordinate(@)
-          -- node[pos=\pos,anchor=north, inner sep=2pt] {\color{gray}\scriptsize \time}
-       (@|-elem.south);
-    }
+    \fill[gray!30] (elem.north west)
+                   -- coordinate[pos=0.5,yshift=-\nb@tc@raster/2](@)
+                   ++(east:\nb@tc@raster) rectangle (elem.south west);
+    \path (@)
+       foreach \t in {#1} {
+         node {\color{gray}\scriptsize \t}
+         -- ++(down:\nb@tc@space*\nb@tc@raster)
+       };
   },
+  time codes/.default={7,...,23},
   vline/.code 2 opt={gray}{%
     \draw[#1] ($(elem.north west)+(east:#2)$)%
                  -- ($(elem.south west)+(east:#2)$);
@@ -248,10 +270,10 @@
   }
 }
 \pgfkeys{
-  /notebook/fill crosses/.style={
-    fill elem={
+  /notebook/elem style/crosses/.style={
+    pattern={
       /notebook/every pattern,pattern={Crosses[distance=5mm]}
-    }
+    },
   }
 }
 
