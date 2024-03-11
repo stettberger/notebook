@@ -238,7 +238,8 @@
       \coordinate (@@) at (0,0);
       \def\notfirst##1{}
       \foreach \field/\cols in {#2} {
-        \node[outer sep=0, anchor=north west,align=left,minimum width=(\elemwidth)/6*\cols,at=(@@.north east)]  (@@) {\strut};
+        \node[outer sep=0, anchor=north west,align=left,minimum width=(\elemwidth)/6*\cols,at=(@@.north east),
+              /notebook/every column/.try]  (@@) {\strut};
         \node[anchor=base west] at (@@.base west) {\strut \field};
         \notfirst{
           \draw[/notebook/every border] ($(@@.north west)+(west:.5\pgflinewidth)+(down:\columnDivider)$)
@@ -391,8 +392,8 @@
 \csdef{nb@weekday@2}{Mi}
 \csdef{nb@weekday@3}{Do}
 \csdef{nb@weekday@4}{Fr}
-\csdef{nb@weekday@5}{\bfseries Sa}
-\csdef{nb@weekday@6}{\bfseries So}
+\csdef{nb@weekday@5}{Sa}
+\csdef{nb@weekday@6}{So}
 
 \def\nb@parsemonth#1#2{
   \pgfcalendarcalc[nb@]{#1}{\nb@tmp}
@@ -418,6 +419,9 @@
     \def\notebook@month@day##1##2##3{
       \pgfkeys{
         /notebook/.cd,
+        @wd 5/.style={font=\bfseries,fill=gray!30},
+        @wd 6/.style={font=\bfseries,fill=gray!30},
+        every column/.style={/notebook/@wd ##3/.try},
         columns={%
           {\rlap{\csuse{nb@weekday@##3}}\hphantom{Mit} \pgfcalendarmonthshortname{\M} ##2}/1%
           ##1%
