@@ -5,33 +5,36 @@
 
 
 \begin{document}
-  \pgfcalendarcalc[Month]{2024-03-01}{\Month}
+  \pgfcalendarcalc[Month]{2024-04-01}{\Month}
   \pgfcalendarcalc[LastDay]{\MonthY-\MonthM-last}{\LastDay}
 
   \nbkeys{
     my notes/.style={fill elem=dotted,label={north east}{#1},},
     my notes/.default=Notes,
+    logo/.code 2 args={
+      \node[anchor=center,center xshift=5mm,fill=white,text opacity=0.5,inner sep=0] at (foldmark) (siegel) {\includegraphics[page=1, width=8mm]{siegel}};
+      \node[anchor=west,rotate=90] at (siegel.north) {\color{gray}\scriptsize #2};
+      \node[anchor=east,rotate=90] at (siegel.south) {\color{gray}\scriptsize #1};
+    },
     every canvas/.style={/notebook/.cd,
       foldmark,punchmarks={65mm/2,65mm/2+45mm},
       paginate={\MonthY-\MonthM[\thepage]},
-    }
-  }
-  
-  \notebookpage{
-    calendar/next week/.style={},
-    calendar=\Month,
-    every label/.append style={font=\Huge},
-    fill elem={},
-    label={center}{
-      \Huge \MonthY\\\pgfcalendarmonthname{\MonthM}
-    }
+      logo={Christian Dietrich}{TU Braunschweig},
+    },
   }
 
-
-  \foreach \DayOfMonth [parse=true] in {0,...,\LastDayD-1} {
-    \pgfcalendarcalc{\Month+\DayOfMonth}{\ThisDay}
-    % Month List
+  \def\BlockMonth{
     \ifnum\DayOfMonth=0\relax
+      \notebookpage{
+         calendar/next week/.style={},
+         calendar=\Month,
+         every label/.append style={font=\Huge},
+         space={[dotted,bottom]4cm},
+         fill elem={},
+         label={center}{
+           \Huge \MonthY\\\pgfcalendarmonthname{\MonthM}
+         }
+      }
       \notebookpage{
         month list={\ThisDay}{Memorable/3,X/.33,Y/.33,Z/.33,/1},
         columns={X/2,Y/2,Z/2},
@@ -43,9 +46,11 @@
       %  fill elem={draw,lines},
       %  vline/.list={\elemwidth/6,\elemwidth/6*4,\elemwidth/6*5},
       %}
-      \notebookpage{my notes}
+      %\notebookpage{my notes}
     \fi
-    % Week
+  }
+
+  \def\BlockWeek{
     \ifnum\WD=0\relax
       \pgfcalendarcalc[Sunday]{\ThisDay+7}{\Sunday}
        \notebookpage{
@@ -63,8 +68,11 @@
         my notes
       }
     \fi
+  }
 
+  \def\BlockWeekday{
     \ifnum\WD<5\relax
+      \cleardoublepage
       \notebookpage{
         columns={%
           {\textbf{\pgfcalendarweekdayname{\WD}, \D.\M.\Y}}/5,%
@@ -72,12 +80,18 @@
         },
         columns={[draw]\color{gray}W/2,\color{gray}H/2,\color{gray}R/2},
         %space={[bottom]1mm},
-        todo={[draw]3},
-        my notes={Journal},
+        todo={[draw]2},
+        my notes={},
         time codes={7,...,21},
         vline={[gray,dash pattern=on 2.5mm off 2.5mm, dash phase=-1.25mm, line width=0.5\pgflinewidth]40mm},
       }
       \notebookpage{my notes}
+    \fi
+  }
+
+  \def\BlockWeekend{
+    \ifnum\WD=4\relax
+      \cleardoublepage
     \fi
     \ifnum\WD>4\relax
       \notebookpage{
@@ -91,6 +105,15 @@
     \fi
   }
 
+  \overfullrule=5mm
+  
+ \foreach \DayOfMonth [parse=true] in {0,...,\LastDayD-1} {
+   \pgfcalendarcalc{\Month+\DayOfMonth}{\ThisDay}
+    \BlockMonth
+    \BlockWeek
+    \BlockWeekday
+    \BlockWeekend
+  }
   \notebookpage{my notes}
 %  \notebookpage{my notes}
 %  \notebookpage{my notes}

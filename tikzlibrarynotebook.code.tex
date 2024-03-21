@@ -59,6 +59,9 @@
      \fi
    },
    foldmark/.default=8mm,
+   /tikz/center xshift/.style={
+     /tikz/xshift/.expanded=\ifoddpage#1\else-1*#1\fi
+   },
    %
    punchmark/.style={
      ultra thin,circle,draw=gray!50,inner sep=0,anchor=center,minimum size=#1
@@ -169,7 +172,7 @@
     },
   },
   draw/.style={
-    yshift=\ifelem@top\pgflinewidth\else-\pgflinewidth\fi,
+    /tikz/yshift/.expanded=\ifelem@top\pgflinewidth\else-\pgflinewidth\fi,
     /tikz/draw=#1,
     append after command={
       \pgfextra{
@@ -353,14 +356,20 @@
    
 \pgfkeys{
   /notebook/calendar/next week/.style={fill=gray!20},
-  /notebook/calendar/past/.style={strike out,draw},
+  /notebook/calendar/past/.style={
+    append after command={
+      \pgfextra{
+        \draw[thick] (\tikzlastnode.center) -- +(45:1.5ex) -- +(225:1.5ex);
+      }
+    },
+  },
   /notebook/calendar/weekend/.style={gray},
   /notebook/calendar/every calendar/.style={
     day heading/.style={font=\bfseries},
     week list,
     month label above centered,
     month text=\mbox{\textit{\%mt} \%y-},
-    every day/.append style={text width=2ex,align=center},
+    every day/.append style={text width=2.3ex,align=center},
     day letter headings,
   },
   /notebook/calendar/calendar week/.code={
@@ -373,7 +382,7 @@
           if (Saturday,Sunday) [/notebook/calendar/weekend]
           if (Monday,day of month=1) { \nb@calendar@kwcode }
           if (at least=\nb@startdate) {}
-          else [nodes={text width=2ex,align=right,/notebook/calendar/past}]
+          else [nodes={align=right,/notebook/calendar/past}]
           if (between=\nb@startdate and \nb@startdate+6) [nodes={/notebook/calendar/next week}]
         }
       \pgfcalendarcalc[nb@]{#2}{\nb@startdate}
