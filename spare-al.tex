@@ -1,0 +1,34 @@
+\documentclass[12pt,twoside,openright]{article}
+\usepackage[a5paper,margin=8mm,bindingoffset=7mm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{notebook}
+
+
+\begin{document}
+  \nbkeys{
+    my notes/.style={fill elem=dotted,label={north east}{#1},},
+    my notes/.default=Notes,
+    logo/.code 2 args={
+      \node[anchor=center,center xshift=5mm,fill=white,text opacity=0.5,inner sep=0] at (foldmark) (siegel) {};
+      \node[anchor=west,rotate=90] at (siegel.north) {\color{gray}\scriptsize #2};
+      \node[anchor=east,rotate=90] at (siegel.south) {\color{gray}\scriptsize #1};
+    },
+	every canvas/.style={/notebook/.cd,
+      foldmark,punchmarks={65mm/2,65mm/2+45mm},
+      logo={Alexander Lochmann}{TU Dortmund},
+    },
+  }
+
+  \foreach \DayOfMonth [parse=true] in {0,...,31} {
+%  \notebookpage{my notes}
+%      \notebookpage{
+%        columns={%
+%         Datum/1 
+%        },
+%        columns={[draw]\color{gray}LOL/1},
+%        my notes
+%      }
+   \notebookpage{my notes}
+  }
+
+\end{document}
