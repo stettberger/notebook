@@ -18,7 +18,7 @@
     },
 	every canvas/.style={/notebook/.cd,
       foldmark,punchmarks={65mm/2,65mm/2+45mm},
-      paginate={\MonthY-\MonthM[\thepage]},
+      paginate={\MonthY-\MonthM~[\thepage]},
       logo={Alexander Lochmann}{TU Dortmund},
     },
   }
@@ -29,15 +29,13 @@
          calendar/next week/.style={},
          calendar=\Month,
          every label/.append style={font=\Huge},
-         space={[dotted,bottom]4cm},
          fill elem={},
          label={center}{
            \Huge \MonthY\\\pgfcalendarmonthname{\MonthM}
          }
       }
       \notebookpage{
-        month list={\ThisDay}{Memorable/3,X/.33,Y/.33,Z/.33,/1},
-        columns={X/2,Y/2,Z/2},
+        month list={\ThisDay}{Memorable/5},
       }
       %\notebookpage{
       %  box={[fill=gray!50,draw]
@@ -56,12 +54,11 @@
        \notebookpage{
         box={\textbf{This Week}  \hfill \ThisDay\ \  --\ \ \Sunday\hspace{1em}},
         column divider={1.3pt},
-        columns={[fill=gray!30,draw]Project/1,Task/3,Prio{/}State/1,Due/1},
+        columns={[fill=gray!30,draw]Project/2,Task/3,Prio/1},
         elem lines=12,
-        vline/.list={\elemwidth/6,\elemwidth/6*4,\elemwidth/6*4.5,\elemwidth/6*5},
-        box={[fill=gray!30,draw]\textbf{Ideas/Tasks to Review}},
+        vline/.list={\elemwidth/6*2,\elemwidth/6*5},
+        box={[fill=gray!30,draw]\textbf{Ideas to Review}},
         elem lines=8,
-        vline/.list={\elemwidth/6,\elemwidth/6*5},
       }
       \notebookpage{
         calendar=\ThisDay,
@@ -75,17 +72,17 @@
       \cleardoublepage
       \notebookpage{
         columns={%
-          {\textbf{\pgfcalendarweekdayname{\WD}, \D.\M.\Y}}/5,%
-          /1%
+          {\textbf{\pgfcalendarweekdayname{\WD}, \D.\M.\Y}}/3,%
+          /3%
         },
-        columns={[draw]\color{gray}W/2,\color{gray}H/2,\color{gray}R/2},
-        %space={[bottom]1mm},
-        todo={[draw]2},
+        todo={[draw]4},
         my notes={},
-        time codes={7,...,21},
-        vline={[gray,dash pattern=on 2.5mm off 2.5mm, dash phase=-1.25mm, line width=0.5\pgflinewidth]40mm},
       }
-      \notebookpage{my notes}
+	  \notebookpage{
+        box={[fill=gray!50,draw]Conclusion},
+		elem lines=3,
+		my notes,
+	}
     \fi
   }
 
