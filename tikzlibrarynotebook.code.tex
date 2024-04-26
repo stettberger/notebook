@@ -143,8 +143,8 @@
   space/.style 2 opt={}{
     elem={[#1] \path ($(0,0)+(up:#2)$);}
   },
-  elem lines/.style={
-    space={[lines,draw]\nb@es@linedistance*#1}
+  elem lines/.style 2 opt={}{
+    space={[#1,lines,draw]\nb@es@linedistance*#2}
   },
 }
 \nbkeys{
