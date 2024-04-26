@@ -1,0 +1,12 @@
+\nbkeys{
+    logo/.code 2 args={
+      \node[anchor=center,center xshift=5mm,fill=white,text opacity=0.5,inner sep=0] at (foldmark) (siegel) 
+      {\includegraphics[page=1, width=8mm]{tubs-logo}};
+      \node[anchor=west,rotate=90] at (siegel.north) {\color{gray}\scriptsize #2};
+      \node[anchor=east,rotate=90] at (siegel.south) {\color{gray}\scriptsize #1};
+    },
+    every canvas/.style={/notebook/.cd,
+      foldmark,punchmarks={65mm/2,65mm/2+45mm},
+      logo={Christian Dietrich}{TU Braunschweig},
+    },
+}

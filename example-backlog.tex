@@ -1,0 +1,33 @@
+\documentclass[12pt,twoside]{article}
+\usepackage[a5paper,margin=8mm,bindingoffset=7mm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{notebook}
+
+\IfFileExists{local.tex}{
+  \input{local.tex}
+}{}
+
+\begin{document}
+\nbkeys{
+  backlog/.style={
+    box={[fill=gray!40,draw]
+      \Huge Backlog\hfill #1},
+    columns={[fill=gray!20,draw]Project/1,Task/4,Due/1},
+    fill elem=lines,
+    vline/.list={\elemwidth/6,\elemwidth/6*5},
+  }
+}
+\foreach \i in {5,...,12}{
+  \notebookpage{backlog=\pgfcalendarmonthname{\i} 2024}
+  \notebookpage{fill elem=dotted}
+}
+\foreach \i in {25,26,27}{
+  \notebookpage{backlog=20\i}
+  \notebookpage{fill elem=dotted}
+}
+
+\notebookpage{fill elem=dotted}
+\notebookpage{fill elem=dotted}
+
+
+\end{document}

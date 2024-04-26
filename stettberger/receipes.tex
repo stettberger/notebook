@@ -1,0 +1,483 @@
+\documentclass[10pt]{article}
+\usepackage[a5paper,margin=8mm,bindingoffset=7mm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{notebook}
+\usepackage{multicol}
+
+\usepackage{enumitem}
+\parskip=1ex
+\parindent=0pt
+\setlist[itemize]{itemsep=0pt, parsep=0pt,topsep=0ex, partopsep=0ex} % Adjust for itemize
+\setlist[enumerate]{itemsep=0pt, parsep=0pt,topsep=0ex, partopsep=0ex} % Adjust for enumerate
+
+\newlist{ingredients}{itemize}{1}
+\setlist[ingredients,1]{label=\textbullet, noitemsep, topsep=1ex, before=\vspace{1ex}, after=\vspace{1ex}, partopsep=0pt, parsep=0pt, itemindent=0pt, leftmargin=*, labelsep=0.5em, font=\bfseries,  leftmargin=!, noitemsep}
+
+\def\Cols{2}
+\newenvironment{Ingredients}[1][]
+{\section{Zutaten\ifx&#1&\else\space(#1)\fi}%
+  \ifnum\Cols=1\else\begin{multicols}{\Cols}\fi
+    \begin{ingredients}}
+    {\end{ingredients}
+  \ifnum\Cols=1\else\end{multicols}\fi}
+
+\newenvironment{Steps}
+    {\section{Schritte}\begin{enumerate}}
+      {\end{enumerate}}
+
+   \def\section#1{\underline{\Large \textbf{#1}}\par}
+    \begin{document}
+
+    \notebookpage{minipage={[inner sep=2mm]
+    {\Huge {Vegane Soljanka}}\\[2ex]
+    \begin{Ingredients}
+      \item[2] {große Zwiebeln}
+      \item[1] {Knolle Sellerie}
+      \item[4] {Möhren}
+      \item[3] {Kartoffeln, mehlig kochend}
+      \item[2 EL] {grüne Pfefferkörner}
+      \item[8] {Lorbeerblätter}
+      \item[6] {Knoblauchzehen}
+      \item[2 L] {Wasser}
+      \item[1 ½ Tuben] {Tomatenmark}
+      \item[1 ½ kg] {Paprikaschoten}
+      \item[2 Gläser] {Gewürzgurken}
+      \item[evtl.] {Hefeextrakt oder Marmite}
+      \item[1 Pck.] {Räuchertofu}
+      \item[200 g] {Paprikamark}
+      \item[nB] {Salz und Pfeffer}
+      \item[nB] {Zucker}
+    \end{Ingredients}
+    \begin{Steps}
+      \item {Zwiebeln, Sellerie, Möhren und Kartoffeln klein schneiden und im Schnellkochtopf anbraten.}
+      \item {Mit Wasser auffüllen, Pfefferkörner, Lorbeer und Knoblauch dazugeben und 15 Minuten kochen lassen.}
+      \item {In der Zwischenzeit Paprikaschoten und Gewürzgurken schneiden.}
+      \item {Brühe salzen, Tomatenmark und Paprikamark dazugeben, optional Hefeextrakt/Marmite zufügen.}
+      \item {Paprikastücke hinzufügen und 15 Minuten kochen lassen, dann Gurken und Gurkensud dazugeben und köcheln lassen.}
+      \item {Räuchertofu braten und zur Suppe geben, abschmecken mit Salz, Pfeffer und Zucker.}
+      \item {Nochmal 10 Minuten kochen lassen und dann servieren.}
+    \end{Steps}
+    \textit{Servieren mit Weißbrot und Sojajoghurt oder für Nicht-Veganer mit saurer Sahne oder Schmand.}
+  },
+  space=4mm, fill elem=dotted}
+
+    \notebookpage{minipage={[inner sep=2mm]
+    {\Huge {Karottenkuchen}}\\[2ex]
+    \begin{Ingredients}[Teig]
+      \item[250 g] {Karotten}
+      \item[125 g] {Butter, zimmerwarm}
+      \item[100 g] {Zucker oder Ahornsirup}
+      \item[1 Prise] {Salz}
+      \item[1 Prise] {gemahlene Vanille}
+      \item[2] {(Leinsamen-) Eier}
+      \item[½ TL] {Zimt}
+      \item[100 g] {Mandeln, gemahlen}
+      \item[125 g] {Mehl}
+      \item[1 TL] {Apfelessig}
+      \item[1,5 TL] {Backpulver}
+      \item[½ TL] {Natron}
+    \end{Ingredients}
+    \begin{Ingredients}[Creme]
+      \item[200 g] {(veganer) Frischkäse}
+      \item[80 g] {Puderzucker}
+      \item[1 Spritzer] {Zitronensaft}
+      \item[etwas] {gemahlene Vanille}
+    \end{Ingredients}
+    \begin{Steps}
+      \item {Ofen auf 180 °C Ober- und Unterhitze vorheizen. Eine 18 oder 20 cm Springform einfetten und mit Backpapier auslegen.}
+      \item {Karotten schälen und fein reiben. Weiche Butter mit Zucker, Salz und Vanille cremig aufschlagen. Karotten und (Leinsamen-) Eier unterrühren.}
+      \item {Mehl, Zimt und Backpulver sieben und mit gemahlenen Mandeln, Natron und Essig zum Teig geben, kurz verrühren.}
+      \item {Teig in die Springform füllen, glatt streichen und 35-40 Minuten backen.}
+      \item {Kuchen abkühlen lassen, dann aus der Form lösen.}
+      \item {Für die Creme alle Zutaten glatt mixen und auf den abgekühlten Kuchen streichen.}
+      \item {Mit Marzipankarotten und gehackten Pistazien dekorieren. Kalt stellen bis zum Verzehr.}
+    \end{Steps}
+    \textbf{Hinweis:} Der Karottenkuchen bleibt ca. 3-4 Tage schön saftig.\par
+    \textbf{Hinweis:} Um ein Leinsamenei herzustellen, 1 EL gemahlene Leinsamen mit 3 EL Wasser vermischen und 5-10 Minuten quellen lassen, bis die Mischung eierähnlich gelartig wird.
+
+  },
+  space=4mm, fill elem=dotted}
+
+    \notebookpage{minipage={[inner sep=2mm]
+    {\Huge {Veganer Schokokuchen mit Frosting}}\\[2ex]
+    \begin{Ingredients}[Schokokuchen]
+      \item[240 ml] {Pflanzenmilch}
+      \item[100 g] {Apfelmark oder Apfelmus}
+      \item[1 EL] {Apfelessig}
+      \item[1 ½ TL] {Vanilleextrakt}
+      \item[100 ml] {Öl }
+      \item[200 g] {Weizen- oder Dinkelmehl}
+      \item[50 g] {Kakaopulver}
+      \item[150 g] {brauner Zucker}
+      \item[2 ½ TL] {Backpulver}
+      \item[½ TL] {Salz}
+    \end{Ingredients}
+    \begin{Ingredients}[Frosting]
+      \item[240 ml] {Kokosmilch}
+      \item[170 g] {dunkle Schokolade, gehackt}
+    \end{Ingredients}
+    \begin{Steps}
+      \item {Ofen auf 180°C Ober-/Unterhitze vorheizen. Eine 20-cm Springform leicht einfetten und den Boden mit Backpapier auslegen.}
+      \item {Pflanzenmilch, Apfelmark, Apfelessig, Vanilleextrakt und Öl verrühren und beiseite stellen.}
+      \item {In einer großen Schüssel Mehl, Kakaopulver, Zucker, Backpulver und Salz vermischen. Die flüssigen Zutaten hinzufügen und zu einem homogenen Teig verrühren.}
+      \item {Teig in die vorbereitete Form geben, glattstreichen und im vorgeheizten Ofen ca. 50 Minuten backen.}
+      \item {Für das Frosting Kokosmilch fast aufkochen, über die gehackte Schokolade gießen, kurz stehen lassen und dann verrühren.}
+      \item {Den abgekühlten Kuchen mit Frosting bestreichen und mit Blaubeeren und Brombeeren garnieren.}
+    \end{Steps}
+  },
+  space=4mm, fill elem=dotted}
+
+    \notebookpage{minipage={[inner sep=2mm]
+    {\Huge {Brioche Burger Buns}}\\[2ex]
+    \begin{Ingredients}
+      \item[3 EL] {warme Milch}
+      \item[200 ml] {warmes Wasser}
+      \item[2 TL] {Trockenhefe od. frische Hefe}
+      \item[2.5 EL] {Zucker}
+      \item[2] {Eier (Größe M)}
+      \item[425 g] {Mehl Typ 550}
+      \item[60 g] {Mehl Typ 405}
+      \item[1.5 TL] {Salz}
+      \item[80 g] {weiche Butter}
+      \item[nB] {Sesam}
+    \end{Ingredients}
+    \begin{Steps}
+      \item {Wasser, Zucker, Hefe und warme Milch in einer Schüssel vermischen, 5 Minuten stehen lassen. 1 Ei aufschäumen.}
+      \item {Mehl mit Salz in einer Schüssel vermischen, Butter zufügen und mit den Fingern kneten, bis sich kleine Klumpen bilden.}
+      \item {Hefe-Mischung mit dem aufgeschäumten Ei zum Teig geben und 10 Minuten kneten, bis der Teig glänzt. An einem warmen Ort 1 Stunde gehen lassen.}
+      \item {Nach 1 Stunde aus dem Teig 8 Brötchen formen, auf einem Backblech verteilen und nochmal 1 Stunde gehen lassen.}
+      \item {Den Ofen auf 200°C vorheizen, eine Schüssel mit kaltem Wasser in den Ofen stellen. Die Brötchen mit 1 verquirltem Ei einpinseln und mit Sesam bestreuen.}
+      \item {In den Ofen geben und ca. 15 Minuten goldgelb backen. Rausnehmen und auskühlen lassen.}
+    \end{Steps}
+  },
+  space=4mm, fill elem=dotted}
+    
+    \notebookpage{minipage={[inner sep=2mm]
+    {\Huge {Pesto aus getrockneten Tomaten}}\\[2ex]
+    \begin{Ingredients}
+      \item[200 g] {Getrocknete Tomaten}
+      \item[200 g] {gemahlene Mandeln}
+      \item[2 EL] {Knoblauchflocken}
+      \item[1 EL] {Pfefferkörner}
+      \item[1.5 EL] {grobes Meersalz}
+      \item[5 TL] {Oregano, getrocknet}
+      \item[5 TL] {Basilikum, getrocknet}
+      \item[2 TL] {Thymian, getrocknet}
+    \end{Ingredients}
+    \begin{Steps}
+      \item {Die getrockneten Tomaten und die Mandeln so fein wie möglich hacken. Die Mandeln sollten danach die Konsistenz von Mandelgrieß haben.}
+      \item {Die Pfefferkörner und das Meersalz im Mörser oder in der Kaffeemühle fein mahlen.}
+      \item {Die Hälfte der Gewürzmischung zugeben und weiter mahlen.}
+      \item {Nun die restliche Gewürzmischung und die gehackten Mandeln und Tomaten vermischen.}
+      \item {Das Trocken-Pesto hält im Kühlschrank mehrere Wochen.}
+    \end{Steps}
+  },
+  space=4mm, fill elem=dotted}
+
+    \notebookpage{minipage={[inner sep=2mm]
+    {\Huge {Kürbismarmelade}}\\[2ex]
+    \begin{Ingredients}
+      \item[250 g] {geschälte Boskoop Äpfel}
+      \item[500 g] {Kürbisfleisch}
+      \item[200 g] {Orangenfilets (od. Dosen-Mandar.)}
+      \item[ ] {Saft einer halben Zitrone}
+      \item[1 EL] {Rum}
+      \item[1/2 TL] {Zimt}
+      \item[1 Msp] {gemahlene Nelken}
+      \item[1 Msp] {gemahlener Kümmel}
+      \item[1 kg] {Gelierzucker}
+    \end{Ingredients}
+    \begin{Steps}
+      \item {Äpfel und Kürbis fein raspeln, Orangen in kleine Stücke schneiden.}
+      \item {Alles mit den restlichen Zutaten in einen Topf geben.}
+      \item {Die Mischung aufkochen und 4 Minuten sprudelnd kochen lassen.}
+      \item {Falls die Masse zu trocken ist, mit Apfelsaft oder Orangensaft auffüllen, um Anbrennen zu verhindern.}
+      \item {In Gläser abfüllen, die Gläser zuerst nur etwa halb füllen, dann rest auffüllen.}
+      \item {Den Deckel sofort verschließen und die Gläser auf den Kopf stellen.}
+    \end{Steps}
+  },
+  space=4mm, fill elem=dotted}
+
+    \notebookpage{minipage={[inner sep=2mm]
+    {\Huge {Oagriertes - Angerührter Hefeteig}}\\[2ex]
+    \begin{Ingredients}
+      \item[22 g] {Hefe}
+      \item[3] {Eier}
+      \item[125 g] {Zucker}
+      \item[125 g] {Butter}
+      \item[1/2] {Zitrone (Schale abgerieben)}
+      \item[330 ml] {Milch}
+      \item[1 Schuss] {Obstbrand}
+    \end{Ingredients}
+    \begin{Steps}
+      \item {Zucker und Butter vorher schaumig schlagen.}
+      \item {Die Hefe in lauwarmer Milch auflösen.}
+      \item {Eier, Zitronenschale, aufgelöste Hefe, geschlagene Zucker-Butter-Mischung und Obstbrand zu einem glatten Teig verrühren.}
+      \item {Den Teig gehen lassen, bis er sich sichtbar vergrößert hat.}
+      \item {In eine gefettete Form füllen und bei mittlerer Hitze mindestens 1 Stunde backen.}
+    \end{Steps}
+  },
+  space=4mm, fill elem=dotted}
+    
+    \notebookpage{minipage={[inner sep=2mm]
+    {\Huge {Lebkuchen}}\\[2ex]
+    \begin{Ingredients}
+      \item[7 Stck] {Butterhörnchen (hart)}
+      \item[500 g] {gemahlene Haselnüsse}
+      \item[750 g] {Zucker}
+      \item[10 g] {Kardamon}
+      \item[7.5 g] {Hirschhornsalz}
+      \item[1 Msp] {gemahlene Nelken}
+      \item[65 g] {Zitronat}
+      \item[65 g] {Orangeat}
+      \item[250 g] {Mehl}
+      \item[20 g] {Zimt}
+      \item[0.5 L] {Wasser}
+    \end{Ingredients}
+    \begin{Steps}
+      \item {Die Butterhörnchen reiben und Zitronat sowie Orangeat etwas hacken.}
+      \item {Mit den trockenen Zutaten verrühren.}
+      \item {Zum Schluss Wasser unterrühren.}
+      \item {Auf 70mm Oblaten verteilen und bei 190 Grad 15-20 Minuten backen.}
+
+      \end{Steps}
+      \textbf{Hinweis:} Ein ganzes Rezept ergibt 60 Lebkuchen.
+      2017: Weniger Wasser verwendet und 17 Minuten gebacken - wurden etwas zu trocken.
+
+  },
+  space=4mm, fill elem=dotted}
+
+
+    \notebookpage{minipage={[inner sep=2mm]
+    {\Huge {Tajine mit Aprikose und Rind}}\\[2ex]
+    \begin{Ingredients}
+      \item[850 g] {Rindfleisch}
+      \item[250 g] {getrocknete Aprikosen}
+      \item[5 Z] {Knoblauch}
+      \item[2] {Zwiebeln}
+      \item[1/2 TL] {gemahlener Ingwer}
+      \item[1/2 TL] {Zimt}
+      \item[1/2 TL] {Paprikapulver}
+      \item[1 Bd] {Koriander}
+      \item[5 cl] {Tomatensoße}
+      \item[nB] {Salz}
+      \item[nB] {Olivenöl}
+      \item[1/2 Gl] {Wasser}
+    \end{Ingredients}
+    \begin{Steps}
+      \item {Die getrockneten Aprikosen 1 Stunde lang in warmem Wasser einweichen.}
+      \item {Das Rindfleisch in Stücke schneiden, die Zwiebeln und den Knoblauch schälen und in Scheiben schneiden.}
+      \item {In der Tajine etwas Olivenöl erhitzen und den Knoblauch und die Zwiebeln anbraten.}
+      \item {Das Fleisch hinzufügen und von allen Seiten anbräunen.}
+      \item {Gewürze hinzufügen und umrühren.}
+      \item {Mit 1/2 Glas Wasser ablöschen und die Tomatensoße sowie die eingeweichten Aprikosen dazugeben.}
+      \item {Bei mittlerer Hitze etwa 20 Minuten kochen lassen.}
+    \end{Steps}
+  },
+  space=4mm, fill elem=dotted}
+
+\notebookpage{minipage={[inner sep=2mm]
+    {\Huge {Tajine mit Lamm}}\\[2ex]
+    \begin{Ingredients}
+      \item[2] {Stk. Lammrücken oder zarte, \\knochenlose Teile}
+      \item[4] {Kartoffeln}
+      \item[1/2] {Zucchini}
+      \item[1] {große Tomate}
+      \item[1] {Karotte}
+      \item[1] {große Zwiebel}
+      \item[nB] {grüne Oliven}
+      \item[1/2 Gl] {extra natives Olivenöl}
+      \item[nB] {Kreuzkümmel}
+      \item[nB] {14-Gewürzmischung (u.a. Muskatnuss, Ingwer, Koriander, Zimt)}
+      \item[nB] {Safran (zur Farbgebung)}
+      \item[nB] {Salz und Pfeffer}
+      \item[1/2 Ta] {Wasser}
+    \end{Ingredients}
+    \begin{Steps}
+      \item {Ein traditionelles Tajine-Geschirr bereitstellen (auf heiße Platte oder Flamme stellen).}
+      \item {3/4 EL Öl im Tajine auf dem Feuer oder der Platte erhitzen.}
+      \item {Das Fleisch von jeder Seite anbraten (ca. 10 Min.).}
+      \item {Die Hitze reduzieren und die gewaschenen, grob geschnittenen Gemüse in Pyramidenform auf dem Fleisch anordnen, von fester zu weicher (Kartoffeln und Karotten, dann Zucchini und Zwiebeln), dabei Kreuzkümmel, 14-Gewürze, Salz und Pfeffer dazwischen streuen.}
+      \item {Mit etwas Wasser beträufeln, mit Safran für Farbe bestreuen und grüne Oliven hinzufügen.}
+      \item {Abdecken und bei schwacher Hitze 30 Minuten kochen.}
+      \item {Nach dieser Zeit das gekochte Gemüse und die gehackten Tomaten hinzufügen, abdecken und weitere 15 Minuten kochen lassen.}
+    \end{Steps}
+  },
+  space=4mm, fill elem=dotted}
+    
+    \notebookpage{minipage={[inner sep=2mm]
+    {\Huge {Fränkischer Rindersauerbraten}}\\[2ex]
+    \begin{Ingredients}[Beize]
+      \item[1/3] {Essig}
+      \item[2/3] {Wasser}
+      \item[1] {Zwiebel}
+      \item[nB] {Senfkörner, Piment, Wacholderbeeren, Salz, Zucker, Lorbeer}
+    \end{Ingredients}
+    {\def\Cols{1}
+      \begin{Ingredients}[Fleisch]
+      \item[1 Stk] {Falsches Filet oder anderer Schmorbraten vom Rind}
+    \end{Ingredients}}
+    \begin{Ingredients}[Sauce]
+      \item[1 EL] {Mehlschwitze}
+      \item[1 TL] {Zucker}
+      \item[nB] {Beizflüssigkeit, Wasser, Rotwein}
+      \item[400 g] {Johannisbeergelee}
+      \item[nB] {Saucenlebkuchen}
+      \item[nB] {Salz, Pfeffer zum Würzen}
+    \end{Ingredients}
+    \begin{Steps}
+    \item {Für die Beize Essig, Wasser, Gewürze und Zwiebeln mischen und das Fleisch darin mindestens 3 bis 8 Tage einlegen, sodass es vollständig bedeckt ist.}
+    \item {Das Fleisch aus der Beize nehmen, abtrocknen, mit Salz und Pfeffer würzen.}
+    \item {Fleisch anbraten und im Ofen bei 200 Grad für 2-3 Stunden schmoren.}
+    \item {Für die Sauce einen Teil der Beize verwenden, Mehlschwitze mit Zucker anbraten, bis er bräunt.
+Mit der Beize, Wasser und Rotwein ablöschen, Johannisbeergelee und Saucenlebkuchen hinzufügen.}
+    \end{Steps}
+  },
+  space=4mm, fill elem=dotted}
+    
+\notebookpage{minipage={[inner sep=2mm]
+    {\Huge {Quarkstollen}}\\[2ex]
+    \begin{Ingredients}
+      \item[500 g] {Mehl}
+      \item[1 Pk] {Vanillezucker}
+      \item[1 Pk] {Backpulver}
+      \item[200 g] {Zucker}
+      \item[etwas] {Salz}
+      \item[4 Tr] {Bittermandelöl}
+      \item[4 Tr] {Zitronenaroma}
+      \item[1 Fl] {Rumaroma}
+      \item[1 Msp] {Kardamom}
+      \item[1 Msp] {gem. Muskat}
+      \item[2] {Eier}
+      \item[125 g] {Margarine}
+      \item[250 g] {Magerquark}
+      \item[125 g] {Korinthen}
+      \item[125 g] {Rosinen}
+      \item[40 g] {Zitronat}
+      \item[40 g] {Orangat}
+      \item[200 g] {Nüsse o. Mandeln}
+    \end{Ingredients}
+    \begin{Steps}
+      \item {Margarine, Zucker, Eier, Gewürze, Aromen und Quark verrühren.}
+      \item {Mehl mit Backpulver mischen und unter die Quarkmasse kneten.}
+      \item {Korinthen, Rosinen, Zitronat, Orangat und Nüsse oder Mandeln unterheben.}
+      \item {Den Teig zu einem Stollen formen und auf ein mit Backpapier belegtes Backblech legen.}
+      \item {Im vorgeheizten Ofen bei 175°C ca. 45-55 Minuten backen.}
+    \end{Steps}
+      
+    Das Rezept ergibt 1 Stollen.
+  },
+  space=4mm, fill elem=dotted}
+
+\notebookpage{minipage={[inner sep=2mm]
+    {\Huge {Vegetarisches WG-Chilli}}\\[2ex]
+    \begin{Ingredients}
+      \item[nB] {Sojagranulat}
+      \item[nB] {Gemüsebrühe}
+      \item[1] {Espresso}
+      \item[2] {Getrocknete Habanero-Chilies}
+      \item[3 EL] {Zucker}
+      \item[1] {Zimtstange}
+      \item[1 Schuss] {Rum}
+      \item[3] {Zwiebeln}
+      \item[6 Z] {Knoblauch}
+      \item[nB] {Geräucherte Chiliflocken}
+      \item[nB] {Geräuchertes Paprikapulver}
+      \item[3 EL] {Kreuzkümmelsamen}
+      \item[1 EL] {Koriandersamen}
+      \item[1 TL] {Zimt}
+      \item[nB] {Salz}
+      \item[nB] {Tomatenmark}
+      \item[5 Do] {Kidneybohnen}
+      \item[2 Do] {Mais}
+      \item[2 Do] {Kichererbsen}
+      \item[3 Pk] {Passierte Tomaten}
+      \item[5 TL] {Kakaopulver}
+      \item[50 g] {geraspelte Zartbitter-Schokolade}
+      \item[nB] {Olivenöl}
+    \end{Ingredients}
+    \begin{Steps}
+      \item {Sojagranulat in Gemüsebrühe einweichen, dann auswaschen.}
+      \item {Chili-Kaffee-Extrakt aus Habaneros, Espresso, Rum, Zucker und Zimtstange vorbereiten.}
+      \item {Zwiebeln und Knoblauch schneiden und anbraten, Soja und Knoblauch zugeben.}
+      \item {Tomatenmark und Chili-Kaffee hinzufügen, umrühren.}
+      \item {Tomaten, Bohnen, Kichererbsen und Mais hinzugeben und köcheln lassen.}
+      \item {Gewürze in Mörser zerkleinern, zu Chilli geben.}
+      \item {Kakaopulver und Schokolade unterrühren, bis Farbe bräunlich wird.}
+      \item {Nach Belieben mit Chili-Kaffee abschmecken und mindestens 30 Minuten köcheln lassen.}
+    \end{Steps}
+      
+    Servieren mit selbstgemachter Guacamole zur Milderung der Schärfe.
+  },
+  space=4mm, fill elem=dotted}
+
+\notebookpage{minipage={[inner sep=2mm]
+    {\Huge {Schokokekse}}\\[2ex]
+    \begin{Ingredients}
+      \item[175 g] {Mehl, Type 405}
+      \item[1 EL] {Backpulver}
+      \item[125 g] {Butter}
+      \item[150 g] {Zucker}
+      \item[1] {Ei}
+      \item[200 g] {Schokolade, Zartbitter}
+    \end{Ingredients}
+    \begin{Steps}
+      \item {Butter und Schokolade zusammen im Wasserbad schmelzen.}
+      \item {Ei mit Zucker schaumig schlagen.}
+      \item {Etwas abgekühlte Schoko-Butter-Mischung unterrühren.}
+      \item {Mehl und Backpulver mischen und ebenfalls unterrühren.}
+      \item {Teighäufchen auf ein mit Backpapier ausgelegtes Backblech setzen.}
+      \item {Im vorgeheizten Ofen bei 180°C 10 bis 12 Minuten backen.}
+    \end{Steps}
+      
+    Das Rezept ergibt ca. 20 Kekse
+  },
+  space=4mm, fill elem=dotted}
+
+\notebookpage{minipage={[inner sep=2mm]
+    {\Huge {Vegetarischer Borschtsch}}\\[2ex]
+    \begin{Ingredients}
+      \item[500 g] {Rote Bete}
+      \item[1 St.] {Porree}
+      \item[3] {Möhren}
+      \item[500 g] {Weißkohl}
+      \item[500 g] {Kartoffeln}
+      \item[1] {kleine Gemüsezwiebel}
+      \item[2 EL] {Öl}
+      \item[2 EL] {heller Balsamico}
+      \item[1 ½ L] {Gemüsebrühe}
+      \item[½ Bd.] {Dill}
+      \item[150g] {Schmand }
+      \item[] {Zucker, Salz, Pfeffer}
+    \end{Ingredients}
+    \begin{Steps}
+      \item {Gemüse vorbereiten und schneiden.}
+      \item {Zwiebeln, Kohl, Rote Bete und Kartoffeln andünsten, mit Brühe ablöschen und köcheln.}
+      \item {Möhren und Porree hinzufügen, weitersimmern.}
+      \item {Mit Zucker, Balsamico, Salz und Pfeffer würzen.}
+      \item {Mit Schmand und Dill servieren.}
+    \end{Steps}
+  },
+  space=4mm, fill elem=dotted}
+
+
+\notebookpage{minipage={[inner sep=2mm]
+    {\Huge {Kirchweihsuppe}}\\[2ex]
+    \begin{Ingredients}
+      \item[125 g] {Butter}
+      \item[] {Petersilie, fein gehackt}
+      \item[] {Salz}
+      \item[4] {Eier}
+      \item[4 Hände] {Semmelbrösel}
+      % Add other ingredients if necessary
+    \end{Ingredients}
+    \begin{Steps}
+      \item {Eier und Butter vorbereiten und mischen mit Petersilie und Salz.}
+      \item {Kühlen des Teiges und Formen der Klößchen.}
+      \item {Varianten der Klößchen: gebacken, gekocht und als Leberklößchen.}
+      % Add other steps if necessary
+    \end{Steps}
+    % Add additional details if necessary
+  },
+  space=4mm, fill elem=dotted}
+\end{document}
